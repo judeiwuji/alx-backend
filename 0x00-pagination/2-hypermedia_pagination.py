@@ -37,10 +37,16 @@ class Server:
         return self.dataset()[start_index:end_index]
 
     def get_hyper(self, page: int = 1, page_size: int = 10):
-        """Returns a hypermedia data"""
+        """Returns a hypermedia data
+
+        Args:
+            page(int)
+            page_size(int)
+        """
         data = self.get_page(page, page_size)
+        total_pages = math.ceil(len(self.dataset()) / page_size)
         has_prev = page - 1 > 0
-        has_next = len(self.get_page(page + 1, page_size)) > 0
+        has_next = page + 1 <= total_pages
 
         return {
             'page_size': len(data),
@@ -48,7 +54,7 @@ class Server:
             'data': data,
             'next_page': page + 1 if has_next else None,
             'previous_page': page - 1 if has_prev else None,
-            'total_pages': math.ceil(len(self.dataset()) / page_size)
+            'total_pages': total_pages
         }
 
 
