@@ -47,7 +47,7 @@ class Server:
         while self.indexed_dataset().get(_index) is None:
             _index += 1
         end_index = page_size + _index
-        end_index = end_index if end_index < len(dataset) else -1
+        # end_index = end_index if end_index < len(dataset) else -1
         data = dataset[_index: end_index]
         return {
             'index': index,
