@@ -36,7 +36,8 @@ class Server:
         start_index, end_index = index_range(page, page_size)
         return self.dataset()[start_index:end_index]
 
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, Union[int, None]]:
+    def get_hyper(self, page: int = 1, page_size: int = 10)\
+            -> Dict[str, Union[int, None]]:
         """Returns a hypermedia data
 
         Args:
@@ -53,7 +54,7 @@ class Server:
             'page': page,
             'data': data,
             'next_page': page + 1 if has_next else None,
-            'previous_page': page - 1 if has_prev else None,
+            'prev_page': page - 1 if has_prev else None,
             'total_pages': total_pages
         }
 
