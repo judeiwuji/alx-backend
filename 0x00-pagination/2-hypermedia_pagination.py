@@ -2,7 +2,7 @@
 """Module: Hypermedia pagination"""
 import csv
 import math
-from typing import List
+from typing import List, Dict
 
 
 class Server:
@@ -36,7 +36,7 @@ class Server:
         start_index, end_index = index_range(page, page_size)
         return self.dataset()[start_index:end_index]
 
-    def get_hyper(self, page: int = 1, page_size: int = 10):
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict:
         """Returns a hypermedia data
 
         Args:
