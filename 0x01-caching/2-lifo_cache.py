@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Module: FIFOCache """
+"""Module: LIFOCache """
 BaseCaching = __import__("base_caching").BaseCaching
 
 
-class FIFOCache (BaseCaching):
+class LIFOCache (BaseCaching):
     """A FIFO cache implementation"""
 
     def __init__(self):
@@ -20,10 +20,12 @@ class FIFOCache (BaseCaching):
 
         size = len(self.cache_data)
         key_exists = key in self.cache_data
+
         if size >= BaseCaching.MAX_ITEMS and not key_exists:
-            discard_key = self.cache_keys.pop(0)
+            discard_key = self.cache_keys.pop()
             self.cache_data.pop(discard_key)
             print("DISCARD: {}".format(discard_key))
+
         if key_exists:
             self.cache_keys.remove(key)
         self.cache_data[key] = item
