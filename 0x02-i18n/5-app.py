@@ -47,7 +47,7 @@ def before_request():
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> str:
     """returns a locale"""
     query = request.query_string.decode('utf-8')
     queries = parse_query_str(query)
