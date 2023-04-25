@@ -3,6 +3,7 @@
 from flask import Flask, render_template, request
 import flask
 from flask_babel import Babel
+from typing import Dict
 
 
 class Config:
@@ -23,6 +24,12 @@ users = {
 }
 
 
+def parse_query_str(query: str) -> Dict:
+    """parse query string"""
+    return {d.split("=")[0]: d.split("=")[1]
+            for d in query.split("&")}
+
+
 def get_user(id: int):
     """Returns a user with given id"""
     return users.get(id, None)
@@ -32,22 +39,22 @@ def get_user(id: int):
 def before_request():
     """Executes before each request"""
     query = request.query_string.decode('utf-8')
-    queries = query.split("=")
-    login_as = None
-    if query and "login_as" in query:
-        login_as = int(queries[1])
-    flask.g.user = get_user(login_as)
+    queries = parse_query_str(query)
+    login_as = queries.get("login_as")
+    if login_as:
+        login_as = int(login_as)
+        flask.g.user = get_user(login_as)
 
 
 @babel.localeselector
 def get_locale():
     """returns a locale"""
-    lang = request.query_string.decode("utf-8")
-    if lang and "locale=" in lang:
-        lang = lang.split("=")
-        selected = lang[1]
-        if selected in app.config['LANGUAGES']:
-            return selected
+    query = request.query_string.decode('utf-8')
+    queries = parse_query_str(query)
+    locale = queries.get("locale")
+    if locale:
+        if locale in app.config['LANGUAGES']:
+            return locale
     return request.accept_languages.\
         best_match(app.config['LANGUAGES'])
 
